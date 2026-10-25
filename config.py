@@ -1,4 +1,4 @@
-"""Brain Memory v0.1 — runtime configuration.
+"""YunXi-BrainMemory-Runtime v0.1 — runtime configuration.
 
 Historical V4–V13 labels in this file identify capability generations, not
 the product release number.  The canonical release value lives in
@@ -6,8 +6,41 @@ the product release number.  The canonical release value lives in
 """
 
 import os
+import logging
+import threading
+import warnings
 
 from version import PRODUCT_VERSION, PRODUCT_VERSION_LABEL
+
+
+ENV_PREFIX = "YUNXI_BRAIN_"
+LEGACY_ENV_PREFIX = "BRAIN_MEMORY_"
+_warned_legacy_names: set[str] = set()
+_env_warning_lock = threading.Lock()
+
+
+def env_name(suffix: str) -> str:
+    """Build the preferred environment variable name."""
+    return ENV_PREFIX + suffix
+
+
+def env_get(suffix: str, default: str | None = None) -> str | None:
+    """Read the preferred name, with a once-per-name legacy warning."""
+    value = os.getenv(env_name(suffix))
+    if value is not None:
+        return value
+    legacy = LEGACY_ENV_PREFIX + suffix
+    value = os.getenv(legacy)
+    if value is None:
+        return default
+    with _env_warning_lock:
+        first_use = legacy not in _warned_legacy_names
+        _warned_legacy_names.add(legacy)
+    if first_use:
+        message = f"{legacy} is deprecated; use {env_name(suffix)} instead."
+        logging.getLogger("yunxi-brainmemory.config").warning(message)
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+    return value
 
 
 def _env_int(
@@ -18,7 +51,7 @@ def _env_int(
 ) -> int:
     """Read a bounded integer override without making startup fragile."""
     try:
-        result = int(os.getenv(name, str(default)))
+        result = int(env_get(name, str(default)))
     except (TypeError, ValueError, OverflowError):
         result = default
     if minimum is not None and result < minimum:
@@ -29,14 +62,14 @@ def _env_int(
 
 
 def _env_bool(name: str, default: bool) -> bool:
-    value = os.getenv(name)
+    value = env_get(name)
     if value is None:
         return default
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 # ── Server ──
-HOST = os.getenv("BRAIN_MEMORY_HOST", "127.0.0.1") or "127.0.0.1"
-PORT = _env_int("BRAIN_MEMORY_PORT", 8001, minimum=1, maximum=65535)
+HOST = env_get("HOST", "127.0.0.1") or "127.0.0.1"
+PORT = _env_int("PORT", 8001, minimum=1, maximum=65535)
 INPUT_TIMEOUT_SEC = 15           # 等待大脑处理输入的秒数
 # Bound external/optional cognitive work inside one heartbeat.  The caller
 # may still receive a ``pending`` response after INPUT_TIMEOUT_SEC, but the
@@ -46,7 +79,7 @@ INPUT_TIMEOUT_SEC = 15           # 等待大脑处理输入的秒数
 # future) indefinitely.  Deployments that have a measured need for a larger
 # budget can opt in explicitly through the environment.
 COGNITIVE_TIMEOUT_SEC = _env_int(
-    "BRAIN_MEMORY_COGNITIVE_TIMEOUT_SEC", 1, minimum=1, maximum=120
+    "COGNITIVE_TIMEOUT_SEC", 1, minimum=1, maximum=120
 )
 LOG_LEVEL = "INFO"               # 日志级别: DEBUG|INFO|WARNING|ERROR
 
@@ -61,36 +94,36 @@ DEEP_REFLECTION_ENABLED = True  # 是否启用深度反思（关闭可大幅省t
 # The episode layer turns existing drives/goals/tools into one bounded,
 # observable action cycle.  It is deliberately conservative by default:
 # one episode at a time and a finite wait before safe failure.
-AUTONOMY_ENABLED = _env_bool("BRAIN_MEMORY_AUTONOMY_ENABLED", True)
+AUTONOMY_ENABLED = _env_bool("AUTONOMY_ENABLED", True)
 AUTONOMY_GOAL_INTERVAL_TICKS = _env_int(
-    "BRAIN_MEMORY_AUTONOMY_GOAL_INTERVAL_TICKS", 30, minimum=1, maximum=100000
+    "AUTONOMY_GOAL_INTERVAL_TICKS", 30, minimum=1, maximum=100000
 )       # ~60s at the default 2s heartbeat
 AUTONOMY_MAX_EPISODE_TICKS = _env_int(
-    "BRAIN_MEMORY_AUTONOMY_MAX_EPISODE_TICKS", 180, minimum=10, maximum=100000
+    "AUTONOMY_MAX_EPISODE_TICKS", 180, minimum=10, maximum=100000
 )        # ~6 minutes before safe timeout
 
 # Long-term task policy.  The scheduler keeps one execution lane while
 # retaining a bounded queue for maintenance, user, and exploration work.
 TASK_QUEUE_LIMIT = _env_int(
-    "BRAIN_MEMORY_TASK_QUEUE_LIMIT", 12, minimum=3, maximum=100
+    "TASK_QUEUE_LIMIT", 12, minimum=3, maximum=100
 )
 TASK_MAINTENANCE_BUDGET_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_MAINTENANCE_BUDGET_TICKS", 60, minimum=1, maximum=100000
+    "TASK_MAINTENANCE_BUDGET_TICKS", 60, minimum=1, maximum=100000
 )
 TASK_USER_BUDGET_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_USER_BUDGET_TICKS", 120, minimum=1, maximum=100000
+    "TASK_USER_BUDGET_TICKS", 120, minimum=1, maximum=100000
 )
 TASK_EXPLORATION_BUDGET_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_EXPLORATION_BUDGET_TICKS", 90, minimum=1, maximum=100000
+    "TASK_EXPLORATION_BUDGET_TICKS", 90, minimum=1, maximum=100000
 )
 TASK_MAINTENANCE_DEADLINE_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_MAINTENANCE_DEADLINE_TICKS", 180, minimum=1, maximum=100000
+    "TASK_MAINTENANCE_DEADLINE_TICKS", 180, minimum=1, maximum=100000
 )
 TASK_USER_DEADLINE_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_USER_DEADLINE_TICKS", 360, minimum=1, maximum=100000
+    "TASK_USER_DEADLINE_TICKS", 360, minimum=1, maximum=100000
 )
 TASK_EXPLORATION_DEADLINE_TICKS = _env_int(
-    "BRAIN_MEMORY_TASK_EXPLORATION_DEADLINE_TICKS", 240, minimum=1, maximum=100000
+    "TASK_EXPLORATION_DEADLINE_TICKS", 240, minimum=1, maximum=100000
 )
 
 # V13 task execution / verification loop.  The limits are deliberately
@@ -98,43 +131,43 @@ TASK_EXPLORATION_DEADLINE_TICKS = _env_int(
 # replay an unverified action after restart.  ``REQUIRE_VERIFIED_COMPLETION``
 # is enabled by default: a returning tool call is not, by itself, proof that
 # a goal was achieved.
-TASK_EXECUTION_ENABLED = _env_bool("BRAIN_MEMORY_TASK_EXECUTION_ENABLED", True)
+TASK_EXECUTION_ENABLED = _env_bool("TASK_EXECUTION_ENABLED", True)
 TASK_EXECUTION_MAX_PLANS = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_PLANS", 32, minimum=1, maximum=1000
+    "TASK_EXECUTION_MAX_PLANS", 32, minimum=1, maximum=1000
 )
 TASK_EXECUTION_MAX_STEPS = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_STEPS", 8, minimum=1, maximum=128
+    "TASK_EXECUTION_MAX_STEPS", 8, minimum=1, maximum=128
 )
 TASK_EXECUTION_MAX_DEPTH = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_DEPTH", 3, minimum=0, maximum=16
+    "TASK_EXECUTION_MAX_DEPTH", 3, minimum=0, maximum=16
 )
 TASK_EXECUTION_MAX_RETRIES = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_RETRIES", 2, minimum=0, maximum=10
+    "TASK_EXECUTION_MAX_RETRIES", 2, minimum=0, maximum=10
 )
 TASK_EXECUTION_MAX_ACTIONS = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_ACTIONS", 128, minimum=1, maximum=5000
+    "TASK_EXECUTION_MAX_ACTIONS", 128, minimum=1, maximum=5000
 )
 TASK_EXECUTION_MAX_OBSERVATIONS = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_OBSERVATIONS", 128, minimum=1, maximum=5000
+    "TASK_EXECUTION_MAX_OBSERVATIONS", 128, minimum=1, maximum=5000
 )
 TASK_EXECUTION_MAX_OUTCOMES = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_OUTCOMES", 128, minimum=1, maximum=5000
+    "TASK_EXECUTION_MAX_OUTCOMES", 128, minimum=1, maximum=5000
 )
 TASK_EXECUTION_MAX_EVENTS = _env_int(
-    "BRAIN_MEMORY_TASK_EXECUTION_MAX_EVENTS", 256, minimum=1, maximum=10000
+    "TASK_EXECUTION_MAX_EVENTS", 256, minimum=1, maximum=10000
 )
 TASK_EXECUTION_REQUIRE_VERIFIED_COMPLETION = _env_bool(
-    "BRAIN_MEMORY_TASK_EXECUTION_REQUIRE_VERIFIED_COMPLETION", True
+    "TASK_EXECUTION_REQUIRE_VERIFIED_COMPLETION", True
 )
 TASK_EXECUTION_AUTO_REPLAN = _env_bool(
-    "BRAIN_MEMORY_TASK_EXECUTION_AUTO_REPLAN", False
+    "TASK_EXECUTION_AUTO_REPLAN", False
 )
 
 # The API process can host the read-only execution boundary alongside the
 # brain.  Writes stay disabled unless an operator explicitly opts in.
-AGENT_BRIDGE_ENABLED = _env_bool("BRAIN_MEMORY_AGENT_BRIDGE_ENABLED", True)
+AGENT_BRIDGE_ENABLED = _env_bool("AGENT_BRIDGE_ENABLED", True)
 AGENT_BRIDGE_ALLOW_WRITE_TOOLS = _env_bool(
-    "BRAIN_MEMORY_AGENT_BRIDGE_ALLOW_WRITE_TOOLS", False
+    "AGENT_BRIDGE_ALLOW_WRITE_TOOLS", False
 )
 
 # ── LLM ──
@@ -170,7 +203,7 @@ EMOTION_DECAY_RATE = 0.95        # 每个 tick 情绪衰减系数
 SALIENCE_THRESHOLD = 0.5         # 突显度超过此值触发注意力聚焦
 
 # ── Database ──
-DB_PATH = os.getenv("BRAIN_MEMORY_DB_PATH", "brain_v4.db") or "brain_v4.db"
+DB_PATH = env_get("DB_PATH", "brain_v4.db") or "brain_v4.db"
 
 # ── Goal System (v5.1) ──
 GOAL_MAX_ACTIVE = 3               # 最多活跃目标数

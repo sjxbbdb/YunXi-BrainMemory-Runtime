@@ -1,4 +1,4 @@
-"""Brain Memory V10.0 — 意识层验收测试。
+"""YunXi-BrainMemory-Runtime V10.0 — 意识层验收测试。
 
 验收标准:
   1. Social Self: 他者模型 + 互动评估 + 依恋形成
@@ -214,7 +214,7 @@ def test_v10_modules_in_brain_stem():
 
 if __name__ == "__main__":
     print("=" * 55)
-    print("Brain Memory V10.0 — 意识层验收测试")
+    print("YunXi-BrainMemory-Runtime V10.0 — 意识层验收测试")
     print("=" * 55)
 
     tests = [

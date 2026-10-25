@@ -35,7 +35,7 @@ import logging
 import math
 from dataclasses import dataclass, field
 
-logger = logging.getLogger("brain-v6.activation-field")
+logger = logging.getLogger("yunxi-brainmemory.v6.activation-field")
 
 
 # ══════════════════════════════════════════════

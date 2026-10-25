@@ -17,7 +17,7 @@ from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v6.metacognition")
+logger = logging.getLogger("yunxi-brainmemory.v6.metacognition")
 
 
 # ══════════════════════════════════════════════

@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Dict, List
 
-logger = logging.getLogger("brain-v5.tool-registry")
+logger = logging.getLogger("yunxi-brainmemory.v5.tool-registry")
 
 
 # ── Tool 合约定义 ──
@@ -213,7 +213,7 @@ def discover_tools(tools_dir: Path | None = None) -> List[str]:
                     # making its parent globally importable.  A namespaced
                     # module key also avoids collisions between two custom
                     # directories containing the same filename.
-                    custom_name = f"_brain_memory_tool_{abs(hash(str(path))) :x}_{path.stem}"
+                    custom_name = f"_yunxi_brainmemory_tool_{abs(hash(str(path))) :x}_{path.stem}"
                     spec = importlib.util.spec_from_file_location(custom_name, path)
                     if spec is None or spec.loader is None:
                         raise ImportError(f"cannot load spec for {path}")

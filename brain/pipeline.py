@@ -8,7 +8,7 @@ import json
 import logging
 from datetime import datetime, timezone, timedelta
 
-logger = logging.getLogger("brain-v5.pipeline")
+logger = logging.getLogger("yunxi-brainmemory.v5.pipeline")
 
 # ═══════════════════════════════════════════════════════════
 # Pipeline Constants (from v3 config)

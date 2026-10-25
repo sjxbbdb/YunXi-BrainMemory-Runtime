@@ -103,13 +103,13 @@ class V13ApiProcessSmokeTests(unittest.TestCase):
             env = os.environ.copy()
             env.update(
                 {
-                    "BRAIN_MEMORY_DB_PATH": db_path,
-                    "BRAIN_MEMORY_OFFLINE": "1",
-                    "BRAIN_MEMORY_HOST": "127.0.0.1",
-                    "BRAIN_MEMORY_PORT": str(port),
-                    "BRAIN_MEMORY_AGENT_BRIDGE_ENABLED": "0",
-                    "BRAIN_MEMORY_AUTONOMY_ENABLED": "0",
-                    "BRAIN_MEMORY_COGNITIVE_TIMEOUT_SEC": "1",
+                    "YUNXI_BRAIN_DB_PATH": db_path,
+                    "YUNXI_BRAIN_OFFLINE": "1",
+                    "YUNXI_BRAIN_HOST": "127.0.0.1",
+                    "YUNXI_BRAIN_PORT": str(port),
+                    "YUNXI_BRAIN_AGENT_BRIDGE_ENABLED": "0",
+                    "YUNXI_BRAIN_AUTONOMY_ENABLED": "0",
+                    "YUNXI_BRAIN_COGNITIVE_TIMEOUT_SEC": "1",
                 }
             )
             process = subprocess.Popen(

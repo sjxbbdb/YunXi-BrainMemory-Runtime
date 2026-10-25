@@ -27,7 +27,7 @@ from pathlib import Path
 from brain.intent import Intent, IntentType
 from agent.tool_registry import ToolDef, ToolRegistry
 
-logger = logging.getLogger("brain-v5.bridge")
+logger = logging.getLogger("yunxi-brainmemory.v5.bridge")
 
 
 _OBS_SECRET_KEY = re.compile(

@@ -10,7 +10,7 @@ import logging
 from datetime import datetime, timezone
 from services.llm_client import get_llm
 
-logger = logging.getLogger("brain-v5.dream")
+logger = logging.getLogger("yunxi-brainmemory.v5.dream")
 
 DREAM_PROMPT = """[SYSTEM CONSTRAINT]
 You are the DREAMING BRAIN. You are synthesizing a dream from memory fragments.

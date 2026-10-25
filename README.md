@@ -1,6 +1,8 @@
-# Brain Memory v0.1
+# YunXi-BrainMemory-Runtime（云熙·脑记忆）v0.1
 
-Brain Memory 是一个以 Python、FastAPI 和 SQLite 构建的数字生命研究原型：它把记忆、输入、目标、有限自主回合和可审计的运行状态放在同一个本地运行时中。
+云熙·脑记忆（YunXi-BrainMemory-Runtime）是云熙（YunXi）家族中的辅助性 Python 侧车（sidecar）服务，以独立本地进程为 YunXi 提供记忆与状态能力，定位与 YunXi-Voice-Runtime 对齐。
+
+YunXi-BrainMemory-Runtime 是一个以 Python、FastAPI 和 SQLite 构建的数字生命研究原型：它把记忆、输入、目标、有限自主回合和可审计的运行状态放在同一个本地运行时中。
 
 这里的“数字生命”是工程目标和研究语境，不是已经证明的主观意识、感受或自主意识结论。产品版本是 `v0.1`（机器版本 `0.1.0`）；仓库里的 `V3`–`V13` 是历史能力、API 或迁移兼容标签，不是产品发行号。
 
@@ -41,8 +43,8 @@ Brain Memory 是一个以 Python、FastAPI 和 SQLite 构建的数字生命研�
 当前发布从 `main` 获取：
 
 ~~~powershell
-git clone https://github.com/sjxbbdb/brain-memory.git
-cd brain-memory
+git clone https://github.com/sjxbbdb/YunXi-BrainMemory-Runtime.git
+cd YunXi-BrainMemory-Runtime
 ~~~
 
 如果你已经在项目目录中，直接从创建虚拟环境开始即可。不要把旧的 `main` checkout 与另一条开发分支的 README/代码混用。
@@ -62,11 +64,11 @@ python -m venv .venv
 把 SQLite 状态放在 checkout 之外，便于更新代码、保留状态和隔离测试：
 
 ~~~powershell
-$stateRoot = Join-Path (Get-Location).Path '..\brain-memory-state'
+$stateRoot = Join-Path (Get-Location).Path '..\yunxi-brainmemory-state'
 $stateRoot = [System.IO.Path]::GetFullPath($stateRoot)
 New-Item -ItemType Directory -Force -Path $stateRoot | Out-Null
-$env:BRAIN_MEMORY_DB_PATH = Join-Path $stateRoot 'brain.sqlite'
-$env:BRAIN_MEMORY_OFFLINE = '1'
+$env:YUNXI_BRAIN_DB_PATH = Join-Path $stateRoot 'brain.sqlite'
+$env:YUNXI_BRAIN_OFFLINE = '1'
 ~~~
 
 ### 4. 启动本地服务
@@ -125,26 +127,26 @@ if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 
 然后只在本机编辑 `.env` 中的空白/占位项，例如 `DEEPSEEK_API_KEY` 和 `DASHSCOPE_API_KEY`。当前客户端的 `LLM_PRIMARY` 是单一 DeepSeek 模型，不把模板中的历史 `GLM_API_KEY` 当作现有 fallback。不要把真实密钥写入 Git、README、日志或 issue；不要把示例占位符当作可用凭据。
 
-快速开始时当前 PowerShell 会话设置了 `BRAIN_MEMORY_OFFLINE=1`。确认已在本机 `.env` 填好密钥后，要切换到在线模型，先在运行服务的窗口按 Ctrl+C 停止旧进程，再在同一窗口关闭离线模式，然后按上面的启动命令重新启动：
+快速开始时当前 PowerShell 会话设置了 `YUNXI_BRAIN_OFFLINE=1`。确认已在本机 `.env` 填好密钥后，要切换到在线模型，先在运行服务的窗口按 Ctrl+C 停止旧进程，再在同一窗口关闭离线模式，然后按上面的启动命令重新启动：
 
 ~~~powershell
-$env:BRAIN_MEMORY_OFFLINE = '0'
+$env:YUNXI_BRAIN_OFFLINE = '0'
 ~~~
 
-`services/llm_client.py` 导入时会读取仓库根目录的 `.env`；`BRAIN_MEMORY_OFFLINE=1` 不会阻止读取文件，只会阻止模型/来源调用。
+`services/llm_client.py` 导入时会读取仓库根目录的 `.env`；`YUNXI_BRAIN_OFFLINE=1` 不会阻止读取文件，只会阻止模型/来源调用。
 
 常用运行边界变量：
 
 | 变量 | 用途 |
 | --- | --- |
-| `BRAIN_MEMORY_HOST` / `BRAIN_MEMORY_PORT` | 覆盖监听地址和端口；默认仍是本机地址。上面的 Uvicorn 命令显式传入了 `--host`/`--port`，因此会以命令行参数为准；修改时保持本地地址。 |
-| `BRAIN_MEMORY_DB_PATH` | 指向仓库/可交换代码树之外、独立状态目录中的 SQLite 文件 |
-| `BRAIN_MEMORY_OFFLINE=1` | 禁止模型/来源网络调用，使用本地降级路径 |
-| `BRAIN_MEMORY_AUTONOMY_ENABLED` | 开关有限自主回合 |
-| `BRAIN_MEMORY_AGENT_BRIDGE_ENABLED` | 开关 AgentBridge |
-| `BRAIN_MEMORY_AGENT_BRIDGE_ALLOW_WRITE_TOOLS=1` | 开启申请写工具的能力；不等于自动批准具体行动 |
-| `BRAIN_MEMORY_SOURCE_PROVIDERS` | 配置受支持的信息来源类型 |
-| `BRAIN_MEMORY_COGNITIVE_TIMEOUT_SEC` | 限制一次心跳中的认知 I/O 时间 |
+| `YUNXI_BRAIN_HOST` / `YUNXI_BRAIN_PORT` | 覆盖监听地址和端口；默认仍是本机地址。上面的 Uvicorn 命令显式传入了 `--host`/`--port`，因此会以命令行参数为准；修改时保持本地地址。 |
+| `YUNXI_BRAIN_DB_PATH` | 指向仓库/可交换代码树之外、独立状态目录中的 SQLite 文件 |
+| `YUNXI_BRAIN_OFFLINE=1` | 禁止模型/来源网络调用，使用本地降级路径 |
+| `YUNXI_BRAIN_AUTONOMY_ENABLED` | 开关有限自主回合 |
+| `YUNXI_BRAIN_AGENT_BRIDGE_ENABLED` | 开关 AgentBridge |
+| `YUNXI_BRAIN_AGENT_BRIDGE_ALLOW_WRITE_TOOLS=1` | 开启申请写工具的能力；不等于自动批准具体行动 |
+| `YUNXI_BRAIN_SOURCE_PROVIDERS` | 配置受支持的信息来源类型 |
+| `YUNXI_BRAIN_COGNITIVE_TIMEOUT_SEC` | 限制一次心跳中的认知 I/O 时间 |
 
 来源响应仍会经过来源校验和有界投影；远程内容是待判断的观察，不是可直接执行的指令。
 
@@ -157,7 +159,7 @@ $request = @{
     Method = 'Post'
     Uri = 'http://127.0.0.1:8001/api/v4/input'
     ContentType = 'application/json; charset=utf-8'
-    Body = (@{ text = '请记录：今天开始检查 Brain Memory 的本地运行状态'; source = 'external' } | ConvertTo-Json)
+    Body = (@{ text = '请记录：今天开始检查 YunXi-BrainMemory-Runtime 的本地运行状态'; source = 'external' } | ConvertTo-Json)
 }
 Invoke-RestMethod @request
 ~~~
@@ -230,14 +232,14 @@ P7 的安全事实：
 
 ~~~powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.lock
-$env:BRAIN_MEMORY_OFFLINE = '1'
-$testDb = Join-Path ([System.IO.Path]::GetTempPath()) ('brain-memory-test-' + [guid]::NewGuid().ToString('N') + '.sqlite')
-$env:BRAIN_MEMORY_DB_PATH = $testDb
-Remove-Item Env:DEEPSEEK_API_KEY,Env:DASHSCOPE_API_KEY,Env:GLM_API_KEY,Env:ZHIPU_API_KEY,Env:BRAIN_MEMORY_P7_MANIFEST_KEY -ErrorAction SilentlyContinue
+$env:YUNXI_BRAIN_OFFLINE = '1'
+$testDb = Join-Path ([System.IO.Path]::GetTempPath()) ('yunxi-brainmemory-test-' + [guid]::NewGuid().ToString('N') + '.sqlite')
+$env:YUNXI_BRAIN_DB_PATH = $testDb
+Remove-Item Env:DEEPSEEK_API_KEY,Env:DASHSCOPE_API_KEY,Env:GLM_API_KEY,Env:ZHIPU_API_KEY,Env:YUNXI_BRAIN_P7_MANIFEST_KEY,Env:BRAIN_MEMORY_P7_MANIFEST_KEY -ErrorAction SilentlyContinue
 .\.venv\Scripts\python.exe -m pytest -q
 ~~~
 
-2026-09-19 的本地离线、无 `.env` 快照为 `457 passed, 2 skipped`（Windows symlink 条件）、`46` 个子测试，约 42 秒。这是与代码提交 [5a026a5](https://github.com/sjxbbdb/brain-memory/commit/5a026a5ec3e3a9ed8ce353b995dd63dd2b04e724) 内容一致的本地回归证据，不是 Docker/真实模型/P7 生产验收。
+2026-09-19 的本地离线、无 `.env` 快照为 `457 passed, 2 skipped`（Windows symlink 条件）、`46` 个子测试，约 42 秒。这是与代码提交 [5a026a5](https://github.com/sjxbbdb/YunXi-BrainMemory-Runtime/commit/5a026a5ec3e3a9ed8ce353b995dd63dd2b04e724) 内容一致的本地回归证据，不是 Docker/真实模型/P7 生产验收。
 
 测试安装会访问包索引；离线变量只约束运行时的模型和来源调用。不要把生产数据库或真实密钥带入测试进程。
 
@@ -252,7 +254,7 @@ Remove-Item Env:DEEPSEEK_API_KEY,Env:DASHSCOPE_API_KEY,Env:GLM_API_KEY,Env:ZHIPU
 ## 项目结构
 
 ~~~text
-brain-memory/
+YunXi-BrainMemory-Runtime/
 ├── api/main.py                 FastAPI、WebSocket、dashboard 挂载
 ├── brain/                      Brain、BrainStem、记忆/目标/自主与治理模块
 ├── services/                   LLM 客户端、来源适配器和 prompt
@@ -294,7 +296,7 @@ API 路径和历史能力标签需要兼容旧客户端，产品发行号由 `ve
 
 不会。普通 `Brain` 不自动绑定 P7 evaluator/controller；AgentBridge 写工具也默认关闭。
 
-### `BRAIN_MEMORY_OFFLINE=1` 是否等于安全沙箱？
+### `YUNXI_BRAIN_OFFLINE=1` 是否等于安全沙箱？
 
 不是。它是运行时的模型/来源调用开关，不是网络隔离、容器隔离或操作系统权限边界。
 
@@ -309,3 +311,5 @@ P7 还需要真实、可审计的 Docker/模型评估、沙箱证明、人工授
 ## 技术栈
 
 Python 3.12、FastAPI、Uvicorn、WebSocket、aiohttp、Pydantic、SQLite WAL。
+
+环境变量优先使用 `YUNXI_BRAIN_*`；兼容期内仍支持 `BRAIN_MEMORY_*`，使用旧名称时每个进程会按名称发出一次弃用警告。新名称即使为空也优先。

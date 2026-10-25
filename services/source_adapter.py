@@ -13,6 +13,8 @@ arXiv 的官方 Atom API，以及由操作者配置的 RSS/Atom feed。这里不
 
 from __future__ import annotations
 
+from config import env_get
+
 import asyncio
 import html
 import ipaddress
@@ -33,7 +35,7 @@ from typing import Any, Iterable
 
 
 DEFAULT_WIKIPEDIA_LANGS = ("zh", "en")
-DEFAULT_USER_AGENT = "brain-memory/11 (+local autonomous source adapter)"
+DEFAULT_USER_AGENT = "YunXi-BrainMemory-Runtime/11 (+local autonomous source adapter)"
 ALLOWED_PROVIDERS = frozenset({"wikipedia", "arxiv", "feeds"})
 ATOM_NS = "http://www.w3.org/2005/Atom"
 
@@ -66,7 +68,7 @@ def _clean_content(value: Any, limit: int = 500) -> str:
 
 
 def _offline_flag() -> bool:
-    return os.getenv("BRAIN_MEMORY_OFFLINE", "").strip().lower() in {
+    return env_get("OFFLINE", "").strip().lower() in {
         "1", "true", "yes", "on"
     }
 
@@ -130,7 +132,7 @@ class SourceAdapter:
         offline: bool | None = None,
     ):
         if providers is None:
-            raw_providers = os.getenv("BRAIN_MEMORY_SOURCE_PROVIDERS", "wikipedia")
+            raw_providers = env_get("SOURCE_PROVIDERS", "wikipedia")
             providers = [item.strip().lower() for item in raw_providers.split(",")]
         elif isinstance(providers, str):
             providers = [item.strip().lower() for item in providers.split(",")]
@@ -142,7 +144,7 @@ class SourceAdapter:
         self.providers = tuple(dict.fromkeys(normalized_providers)) or ("wikipedia",)
 
         if feed_urls is None:
-            raw_feeds = os.getenv("BRAIN_MEMORY_SOURCE_FEEDS", "")
+            raw_feeds = env_get("SOURCE_FEEDS", "")
             feed_urls = [item.strip() for item in raw_feeds.split(",") if item.strip()]
         elif isinstance(feed_urls, str):
             feed_urls = [item.strip() for item in feed_urls.split(",") if item.strip()]
@@ -153,8 +155,8 @@ class SourceAdapter:
         )[:16]
 
         if wikipedia_langs is None:
-            raw_langs = os.getenv(
-                "BRAIN_MEMORY_SOURCE_WIKIPEDIA_LANGS",
+            raw_langs = env_get(
+                "SOURCE_WIKIPEDIA_LANGS",
                 ",".join(DEFAULT_WIKIPEDIA_LANGS),
             )
             wikipedia_langs = [item.strip().lower() for item in raw_langs.split(",")]
@@ -171,8 +173,8 @@ class SourceAdapter:
         )[:8] or DEFAULT_WIKIPEDIA_LANGS
 
         try:
-            parsed_timeout = float(timeout if timeout is not None else os.getenv(
-                "BRAIN_MEMORY_SOURCE_TIMEOUT_SEC", "8"
+            parsed_timeout = float(timeout if timeout is not None else env_get(
+                "SOURCE_TIMEOUT_SEC", "8"
             ))
         except (TypeError, ValueError, OverflowError):
             parsed_timeout = 8.0
@@ -180,16 +182,16 @@ class SourceAdapter:
             parsed_timeout = 8.0
         self.timeout = max(1.0, min(30.0, parsed_timeout))
         self.max_bytes = _bounded_int(
-            max_bytes if max_bytes is not None else os.getenv(
-                "BRAIN_MEMORY_SOURCE_MAX_BYTES", "1000000"
+            max_bytes if max_bytes is not None else env_get(
+                "SOURCE_MAX_BYTES", "1000000"
             ),
             1_000_000,
             16_384,
             5_000_000,
         )
         try:
-            parsed_ttl = float(cache_ttl if cache_ttl is not None else os.getenv(
-                "BRAIN_MEMORY_SOURCE_CACHE_TTL_SEC", "60"
+            parsed_ttl = float(cache_ttl if cache_ttl is not None else env_get(
+                "SOURCE_CACHE_TTL_SEC", "60"
             ))
         except (TypeError, ValueError, OverflowError):
             parsed_ttl = 60.0

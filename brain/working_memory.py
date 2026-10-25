@@ -21,7 +21,7 @@ import logging
 import math
 from config import WORKING_MEMORY_CAPACITY
 
-logger = logging.getLogger("brain-v6.working-memory")
+logger = logging.getLogger("yunxi-brainmemory.v6.working-memory")
 
 
 class WorkingMemory:

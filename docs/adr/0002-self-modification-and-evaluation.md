@@ -48,7 +48,7 @@ attestor 秘密、容器/作业权限和远程仓库凭据放在候选不可访�
 或容器/supervisor 另行覆盖。
 
 SQLite 数据库及其 `-wal`、`-shm`、`-journal` 状态属于持久生命状态，不得放进可整树交换
-的 active/candidate 目录；生产宿主应通过活动树之外的绝对 `BRAIN_MEMORY_DB_PATH` 绑定
+的 active/candidate 目录；生产宿主应通过活动树之外的绝对 `YUNXI_BRAIN_DB_PATH` 绑定
 它们，并在构造 `PromotionController` 时传入 `persistence_path`。控制器在初始化、暂存和
 恢复阶段都会拒绝发现这类文件；显式绑定还能在文件尚未创建时提前拒绝树内路径。代际接替
 采用 staged handover：父实例必须先进入 `SUCCESSION_PENDING` 并绑定目标 child，随后才允许
@@ -63,3 +63,5 @@ pending、证据和封口门。
 - 每个候选都有可追溯版本、评估收据、持久交换清单和回滚路径，长期迭代可以从最近可信版本继续。
 - 默认保护底线不可由 `protected_files`/`protected_paths` 删除；宿主仍应把具体项目路径、
   file-backed ledger 和 OS 隔离策略作为部署配置的一部分核验。
+
+环境变量使用 `YUNXI_BRAIN_*`；兼容期支持旧 `BRAIN_MEMORY_*`，并按名称每进程警告一次。

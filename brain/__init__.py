@@ -1,4 +1,4 @@
-"""Brain Memory v5.0 — Brain regions."""
+"""YunXi-BrainMemory-Runtime v5.0 — Brain regions."""
 
 from brain.brain_state import BrainState
 from brain.brain_stem import BrainStem

@@ -1,4 +1,4 @@
-"""Brain Memory v0.1 API — FastAPI + WebSocket.
+"""YunXi-BrainMemory-Runtime v0.1 API — FastAPI + WebSocket.
 
 REST:
   GET  /api/v4/state        — 当前脑状态
@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-# Ensure the brain-memory project root is on the path when launched as a module.
+# Ensure the YunXi-BrainMemory-Runtime project root is on the path when launched as a module.
 _sys_path_root = Path(__file__).parent.parent
 if str(_sys_path_root) not in sys.path:
     sys.path.insert(0, str(_sys_path_root))
@@ -44,6 +44,7 @@ from brain.public_projection import (
 from agent.tool_registry import discover_tools, registry
 from agent_bridge import AgentBridge
 from config import (
+    env_get,
     HOST,
     PORT,
     AGENT_BRIDGE_ENABLED,
@@ -52,7 +53,7 @@ from config import (
 )
 from version import PRODUCT_VERSION, PRODUCT_VERSION_LABEL
 
-logger = logging.getLogger("brain-v5.api")
+logger = logging.getLogger("yunxi-brainmemory.v5.api")
 
 # ── Global brain instance ──
 _brain: Brain | None = None
@@ -489,14 +490,14 @@ async def _broadcast_loop():
 # ── App ──
 
 app = FastAPI(
-    title=f"Brain Memory {PRODUCT_VERSION_LABEL}",
+    title=f"YunXi-BrainMemory-Runtime {PRODUCT_VERSION_LABEL}",
     version=PRODUCT_VERSION,
     lifespan=lifespan,
 )
 
 _cors_origins = [
     origin.strip()
-    for origin in os.getenv("BRAIN_MEMORY_CORS_ORIGINS", "").split(",")
+    for origin in env_get("CORS_ORIGINS", "").split(",")
     if origin.strip()
 ]
 

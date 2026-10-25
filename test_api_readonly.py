@@ -98,7 +98,7 @@ class V13ReadOnlyApiTests(unittest.TestCase):
         self.assertEqual(api_main.app.version, PRODUCT_VERSION)
         self.assertEqual(
             api_main.app.title,
-            f"Brain Memory {PRODUCT_VERSION_LABEL}",
+            f"YunXi-BrainMemory-Runtime {PRODUCT_VERSION_LABEL}",
         )
 
     def test_health_reports_canonical_product_version(self):

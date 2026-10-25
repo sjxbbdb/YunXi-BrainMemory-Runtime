@@ -1,4 +1,4 @@
-# 🧬 Brain Memory v0.1 — 可验证自主闭环
+# 🧬 YunXi-BrainMemory-Runtime v0.1 — 可验证自主闭环
 
 当前产品发行号从本版本起统一采用 `v0.x` 规则。本次基线为 `v0.1`（机器可读版本
 `0.1.0`）；后续功能迭代按 `v0.2`、`v0.3` 递进，稳定后再进入 `v1.0`。
@@ -38,7 +38,7 @@ file-backed `PromotionLedger`；仅内存账本不能跨进程证明晋升收据
 活动树/候选树必须是专用运行时树；控制器会拒绝包含 `.git`、`.hg`、`.svn`、`.venv`、
 `venv` 或 `node_modules` 的 checkout。敏感路径检查只看名称和目录元数据，评估通过不
 等于晋升获准；SQLite 数据库及 `-wal`/`-shm`/`-journal` 文件也必须放在活动树之外，
-并通过活动树之外的绝对 `BRAIN_MEMORY_DB_PATH` 持久化。宿主仍需在冻结快照和 OS 隔离下
+并通过活动树之外的绝对 `YUNXI_BRAIN_DB_PATH` 持久化。宿主仍需在冻结快照和 OS 隔离下
 部署，并把私有配置、依赖和密钥放在树外。测试工具链由 `requirements-dev.lock` 单独锁定，
 不会被生产启动脚本自动安装。
 
@@ -59,3 +59,5 @@ child genesis、继承锚点和 SuccessionRecord；三类证据均绑定同一 l
 [`docs/verification/p6-living-world-soak-2026-09-09.md`](docs/verification/p6-living-world-soak-2026-09-09.md)。
 
 历史发行记录见 [RELEASE_v10.0.md](RELEASE_v10.0.md)。
+
+环境变量优先使用 `YUNXI_BRAIN_*`；兼容期内仍支持 `BRAIN_MEMORY_*`，使用旧名称时每个进程会按名称发出一次弃用警告。新名称即使为空也优先。

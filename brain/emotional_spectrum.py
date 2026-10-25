@@ -10,7 +10,7 @@ from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v5.emotional-spectrum")
+logger = logging.getLogger("yunxi-brainmemory.v5.emotional-spectrum")
 
 
 # ══════════════════════════════════════════════

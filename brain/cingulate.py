@@ -8,7 +8,7 @@
 
 import logging
 
-logger = logging.getLogger("brain-v5.cingulate")
+logger = logging.getLogger("yunxi-brainmemory.v5.cingulate")
 
 
 class Cingulate:

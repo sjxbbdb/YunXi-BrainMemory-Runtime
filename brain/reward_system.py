@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from collections import deque
 
-logger = logging.getLogger("brain-v10.reward-system")
+logger = logging.getLogger("yunxi-brainmemory.v10.reward-system")
 
 
 # ══════════════════════════════════════════════

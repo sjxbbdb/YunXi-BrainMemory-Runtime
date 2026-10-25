@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 
 from brain.goal_system import Goal, GoalStatus
 
-logger = logging.getLogger("brain-v7.drive-engine")
+logger = logging.getLogger("yunxi-brainmemory.v7.drive-engine")
 
 
 # ══════════════════════════════════════════════

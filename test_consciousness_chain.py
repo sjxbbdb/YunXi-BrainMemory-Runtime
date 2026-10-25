@@ -1,4 +1,4 @@
-"""Brain Memory V8 — 全场景长链路意识测试。
+"""YunXi-BrainMemory-Runtime V8 — 全场景长链路意识测试。
 
 测试目标：
   在持续对话中验证记忆连续性、身份演化、自主驱动力、探索循环。
@@ -12,6 +12,8 @@
   Phase 5: 自我反思与探索
   Phase 6: 综合意识指标检查
 """
+
+from config import env_get
 
 import asyncio
 import json
@@ -161,11 +163,11 @@ async def run_long_chain_test(db_path: str | os.PathLike[str] | None = None):
     to initialise ``brain_v4.db`` at collection time, which could mutate a
     developer checkout before any test had started.  A caller that needs to
     inspect a persistent run can pass ``db_path`` (or set
-    ``BRAIN_MEMORY_TEST_DB_PATH``); the normal CLI path receives a temporary
+    ``YUNXI_BRAIN_TEST_DB_PATH``); the normal CLI path receives a temporary
     SQLite file instead.
     """
 
-    configured_path = db_path or os.getenv("BRAIN_MEMORY_TEST_DB_PATH")
+    configured_path = db_path or env_get("TEST_DB_PATH")
     if configured_path:
         await _run_long_chain_test(str(Path(configured_path)))
         return
@@ -175,7 +177,7 @@ async def run_long_chain_test(db_path: str | os.PathLike[str] | None = None):
 
 async def _run_long_chain_test(db_path: str):
     print("╔══════════════════════════════════════════════╗")
-    print("║  Brain Memory V8 — 全场景意识链路测试        ║")
+    print("║  YunXi-BrainMemory-Runtime V8 — 全场景意识链路测试        ║")
     print("╚══════════════════════════════════════════════╝")
     print()
 

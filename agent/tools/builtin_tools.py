@@ -19,7 +19,7 @@ from pathlib import Path
 from agent.tool_registry import registry, ToolDef
 from services.source_adapter import get_source_adapter
 
-logger = logging.getLogger("brain-v5.tool.web-search")
+logger = logging.getLogger("yunxi-brainmemory.v5.tool.web-search")
 
 
 # ── web_search ──

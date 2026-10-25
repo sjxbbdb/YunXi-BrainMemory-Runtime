@@ -1,4 +1,4 @@
-"""Brain Memory V6.0 — State Field 集成测试。
+"""YunXi-BrainMemory-Runtime V6.0 — State Field 集成测试。
 
 验证所有 V6 新增功能:
   1. ActivationField 初始化和快照/恢复
@@ -335,7 +335,7 @@ def test_full_closure():
 
 if __name__ == "__main__":
     print("=" * 55)
-    print("Brain Memory V6.0 — State Field 集成测试")
+    print("YunXi-BrainMemory-Runtime V6.0 — State Field 集成测试")
     print("=" * 55)
 
     tests = [

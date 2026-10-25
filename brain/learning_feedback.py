@@ -54,7 +54,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Mapping
 
-logger = logging.getLogger("brain-v13.learning-feedback")
+logger = logging.getLogger("yunxi-brainmemory.v13.learning-feedback")
 
 
 class LearningDisposition:

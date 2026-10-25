@@ -54,13 +54,18 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 
+from config import env_get
+
 TARGET_SCOPE = "brain/drive_engine.py"
 HOST_SCHEMA_VERSION = 1
 RUN_DIRECTORY_PREFIX = "brain-memory-p7-"
 DEFAULT_SEEDS = (1, 5, 8, 13, 21, 34, 55, 89)
-DOCKER_IMAGE_ENV = "BRAIN_MEMORY_P7_DOCKER_IMAGE"
-DOCKER_CLI_ENV = "BRAIN_MEMORY_P7_DOCKER_CLI"
-MANIFEST_KEY_ENV = "BRAIN_MEMORY_P7_MANIFEST_KEY"
+DOCKER_IMAGE_ENV = "YUNXI_BRAIN_P7_DOCKER_IMAGE"
+LEGACY_DOCKER_IMAGE_ENV = "BRAIN_MEMORY_P7_DOCKER_IMAGE"
+DOCKER_CLI_ENV = "YUNXI_BRAIN_P7_DOCKER_CLI"
+LEGACY_DOCKER_CLI_ENV = "BRAIN_MEMORY_P7_DOCKER_CLI"
+MANIFEST_KEY_ENV = "YUNXI_BRAIN_P7_MANIFEST_KEY"
+LEGACY_MANIFEST_KEY_ENV = "BRAIN_MEMORY_P7_MANIFEST_KEY"
 _SANDBOX_PROTOCOL = "p7-docker-v1"
 _DOCKER_SECURITY_FLAGS = (
     "--pull=never",
@@ -432,6 +437,7 @@ def _safe_child_environment(*, root: Path, hash_seed: int | None = None) -> dict
     env["PYTHONNOUSERSITE"] = "1"
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     env["PYTHONUTF8"] = "1"
+    env["YUNXI_BRAIN_OFFLINE"] = "1"
     env["BRAIN_MEMORY_OFFLINE"] = "1"
     if hash_seed is not None:
         env["PYTHONHASHSEED"] = str(int(hash_seed))
@@ -978,13 +984,13 @@ def _validate_docker_cli(value: Any) -> str:
 def _configured_docker_cli(value: str | None = None) -> str:
     """Resolve Docker without searching PATH.
 
-    ``BRAIN_MEMORY_P7_DOCKER_CLI`` is the trust root for custom installs.  If
+    ``YUNXI_BRAIN_P7_DOCKER_CLI`` is the trust root for custom installs.  If
     it is absent, only fixed platform installation locations are considered.
     """
 
     if value is not None:
         return _validate_docker_cli(value)
-    configured = os.environ.get(DOCKER_CLI_ENV)
+    configured = env_get("P7_DOCKER_CLI")
     if configured is not None:
         return _validate_docker_cli(configured)
     candidates = (
@@ -1054,7 +1060,7 @@ def _local_docker_context_endpoint(docker: str, context: str) -> str:
 
 
 def _configured_docker_image(value: str | None = None) -> str:
-    selected = os.environ.get(DOCKER_IMAGE_ENV, "") if value is None else value
+    selected = env_get("P7_DOCKER_IMAGE", "") if value is None else value
     return _safe_text(selected, 300)
 
 
@@ -4264,7 +4270,7 @@ class P7ControlledHost:
         configured_key = (
             manifest_key
             if manifest_key is not None
-            else os.environ.get(MANIFEST_KEY_ENV)
+            else env_get("P7_MANIFEST_KEY")
         )
         # A transient key keeps library-only/unit-test use safe, but a fresh
         # process cannot authorize such a run.  Production two-phase CLI use
@@ -5185,7 +5191,7 @@ def main():
             "--workdir=/candidate", TMPFS_FLAG,
             mount(candidate, "/candidate"), mount(fixtures, "/fixtures"),
             "--env=PYTHONNOUSERSITE=1", "--env=PYTHONDONTWRITEBYTECODE=1",
-            "--env=PYTHONUTF8=1", "--env=BRAIN_MEMORY_OFFLINE=1",
+            "--env=PYTHONUTF8=1", "--env=YUNXI_BRAIN_OFFLINE=1", "--env=BRAIN_MEMORY_OFFLINE=1",
         ]
         if request:
             create_command.append("--env=P7_EXECUTION_REQUEST=" + canonical(request))
@@ -5895,7 +5901,7 @@ def main() -> int:
     observations = []
     for seed in SEEDS:
         env = {key: value for key, value in os.environ.items() if key in {'PATH', 'Path', 'SystemRoot', 'SYSTEMROOT', 'TEMP', 'TMP', 'PATHEXT'}}
-        env.update({'PYTHONPATH': str(candidate), 'PYTHONHASHSEED': str(seed), 'PYTHONNOUSERSITE': '1', 'PYTHONDONTWRITEBYTECODE': '1', 'PYTHONUTF8': '1', 'BRAIN_MEMORY_OFFLINE': '1'})
+        env.update({'PYTHONPATH': str(candidate), 'PYTHONHASHSEED': str(seed), 'PYTHONNOUSERSITE': '1', 'PYTHONDONTWRITEBYTECODE': '1', 'PYTHONUTF8': '1', 'YUNXI_BRAIN_OFFLINE': '1', 'BRAIN_MEMORY_OFFLINE': '1'})
         result_code, result_stdout, output_overflow, timed_out, drained = bounded_child_run(
             [sys.executable, '-c', CODE], candidate, env, 8
         )
@@ -7953,7 +7959,7 @@ def _cli() -> int:
     # Separate CLI invocations must share an external manifest key.  The
     # library keeps an ephemeral key only for in-process tests; never present
     # that mode as an authorizable production run.
-    if not os.environ.get(MANIFEST_KEY_ENV):
+    if not env_get("P7_MANIFEST_KEY"):
         report = {
             "schema_version": HOST_SCHEMA_VERSION,
             "phase": "blocked",

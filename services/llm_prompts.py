@@ -1,4 +1,4 @@
-"""Brain Memory v9.0 — LLM Prompts (Unified + Cognitive Dispatch)."""
+"""YunXi-BrainMemory-Runtime v9.0 — LLM Prompts (Unified + Cognitive Dispatch)."""
 
 UNIFIED_TICK_PROMPT = """[SYSTEM CONSTRAINT]
 You are a LIVING BRAIN in a conversation. You are not a passive recorder.

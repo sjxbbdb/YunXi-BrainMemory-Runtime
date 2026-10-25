@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brain Memory v0.1 · Autonomous Episodes</title>
+<title>YunXi-BrainMemory-Runtime v0.1 · Autonomous Episodes</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#06060f;--surface:#0e0e20;--card:#111128;--border:#1a1a3a;--text:#c8d0e0;--dim:#555570;--accent:#8b7cf0;--accent-glow:#a99ff8;--green:#2ecc71;--red:#e74c3c;--orange:#f39c12;--blue:#5dade2;--warn:#e67e22}
@@ -226,7 +226,7 @@ function loadProductVersion(){
     const label = h.version_label || (h.product_version ? 'v'+h.product_version.replace(/\.0$/,'') : 'v0.1');
     const el = document.getElementById('productVersion');
     if(el)el.textContent=label+' · Autonomous';
-    document.title='Brain Memory '+label+' · Autonomous Episodes';
+    document.title='YunXi-BrainMemory-Runtime '+label+' · Autonomous Episodes';
   }).catch(()=>{});
 }
 

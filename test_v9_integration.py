@@ -1,4 +1,4 @@
-"""Brain Memory V9.0 — 新模块验收测试。
+"""YunXi-BrainMemory-Runtime V9.0 — 新模块验收测试。
 
 验收标准:
   1. PredictiveLayer: 期望生成 + 误差计算 + surprise→salience 转化
@@ -233,7 +233,7 @@ def test_modules_in_brain_stem():
 
 if __name__ == "__main__":
     print("=" * 55)
-    print("Brain Memory V9.0 — 新模块验收测试")
+    print("YunXi-BrainMemory-Runtime V9.0 — 新模块验收测试")
     print("=" * 55)
 
     tests = [

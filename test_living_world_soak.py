@@ -8,6 +8,8 @@ file.  The shortened heartbeat is test-local; production timing is untouched.
 
 from __future__ import annotations
 
+from config import env_get
+
 import asyncio
 import math
 import os
@@ -37,12 +39,12 @@ class LivingWorldSoakTests(unittest.IsolatedAsyncioTestCase):
         """Return a bounded opt-in wall-clock duration for the P6 soak.
 
         The ordinary regression remains fast.  Release validation can set
-        ``BRAIN_MEMORY_P6_SOAK_SECONDS`` to collect a longer continuous-heartbeat
+        ``YUNXI_BRAIN_P6_SOAK_SECONDS`` to collect a longer continuous-heartbeat
         observation without changing production timing or test source.
         """
 
         try:
-            value = float(os.getenv("BRAIN_MEMORY_P6_SOAK_SECONDS", "0.045"))
+            value = float(env_get("P6_SOAK_SECONDS", "0.045"))
         except (TypeError, ValueError, OverflowError):
             value = 0.045
         if not math.isfinite(value):

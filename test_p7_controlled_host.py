@@ -700,6 +700,7 @@ class P7ControlledHostContractTests(unittest.TestCase):
         # The scenario under test is explicitly the in-process ephemeral-key
         # path, not the production two-phase environment configuration.
         with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("YUNXI_BRAIN_P7_MANIFEST_KEY", None)
             os.environ.pop("BRAIN_MEMORY_P7_MANIFEST_KEY", None)
             with tempfile.TemporaryDirectory(prefix="p7-ephemeral-key-") as temp:
                 root = Path(temp)

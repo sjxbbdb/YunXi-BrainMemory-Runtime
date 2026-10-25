@@ -1,4 +1,4 @@
-"""Brain Memory V7.0 — Drive Engine 验收测试。
+"""YunXi-BrainMemory-Runtime V7.0 — Drive Engine 验收测试。
 
 四项验收标准:
   1. 无人输入时系统能够生成目标
@@ -263,7 +263,7 @@ def test_goal_update_and_priority():
 
 if __name__ == "__main__":
     print("=" * 55)
-    print("Brain Memory V7.0 — Drive Engine 验收测试")
+    print("YunXi-BrainMemory-Runtime V7.0 — Drive Engine 验收测试")
     print("=" * 55)
 
     tests = [

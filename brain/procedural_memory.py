@@ -23,7 +23,7 @@ from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v5.procedural-memory")
+logger = logging.getLogger("yunxi-brainmemory.v5.procedural-memory")
 
 
 @dataclass

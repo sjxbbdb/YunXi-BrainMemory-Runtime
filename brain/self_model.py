@@ -15,7 +15,7 @@ import logging
 import math
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v7.self-model")
+logger = logging.getLogger("yunxi-brainmemory.v7.self-model")
 
 # ── 核心身份基底（不可变）──
 BASE_IDENTITY = (

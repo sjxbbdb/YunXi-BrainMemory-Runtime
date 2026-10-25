@@ -1,4 +1,4 @@
-"""Brain Memory v6.0 — Brain state container (V6: +ActivationField).
+"""YunXi-BrainMemory-Runtime v6.0 — Brain state container (V6: +ActivationField).
 
 Holds all the live, mutable state of the brain at any given moment.
 Snapshotted to SQLite every STATE_SNAPSHOT_INTERVAL_SEC.

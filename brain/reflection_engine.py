@@ -12,7 +12,7 @@
 import logging
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v8.reflection-engine")
+logger = logging.getLogger("yunxi-brainmemory.v8.reflection-engine")
 
 
 class ReflectionEngine:

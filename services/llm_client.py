@@ -1,4 +1,4 @@
-"""LLM Client — Unified multi-provider LLM + Embedding backend for Brain Memory.
+"""LLM Client — Unified multi-provider LLM + Embedding backend for YunXi-BrainMemory-Runtime.
 
 Providers:
   - DeepSeek V4.1 Flash: primary LLM (fast, multimodal-capable API channel)
@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-logger = logging.getLogger("brain-memory.llm")
+logger = logging.getLogger("yunxi-brainmemory.llm")
 
 
 def _load_dotenv():
@@ -37,9 +37,11 @@ def _load_dotenv():
 
 _load_dotenv()
 
+from config import env_get
+
 
 def _env_flag(name: str, default: bool = False) -> bool:
-    value = os.environ.get(name)
+    value = env_get(name)
     if value is None:
         return default
     return value.strip().lower() in {"1", "true", "yes", "on"}
@@ -48,7 +50,7 @@ def _env_flag(name: str, default: bool = False) -> bool:
 # An absent credential must produce a local, deterministic fallback rather
 # than an unauthenticated network request.  This also gives test and offline
 # deployments an explicit switch that never contacts an external provider.
-OFFLINE_MODE = _env_flag("BRAIN_MEMORY_OFFLINE", False)
+OFFLINE_MODE = _env_flag("OFFLINE", False)
 
 DEEPSEEK_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 # DeepSeek's current canonical API model is ``deepseek-v4-flash``.  The base URL

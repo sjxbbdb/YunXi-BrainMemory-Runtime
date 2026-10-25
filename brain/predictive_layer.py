@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 from collections import deque
 
-logger = logging.getLogger("brain-v9.predictive-layer")
+logger = logging.getLogger("yunxi-brainmemory.v9.predictive-layer")
 
 # ══════════════════════════════════════════════
 # 数据结构

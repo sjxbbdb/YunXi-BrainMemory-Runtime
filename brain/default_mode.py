@@ -10,7 +10,7 @@ import json
 import logging
 from services.llm_client import get_llm
 
-logger = logging.getLogger("brain-v5.default-mode")
+logger = logging.getLogger("yunxi-brainmemory.v5.default-mode")
 
 DEFAULT_MODE_PROMPT = """[SYSTEM CONSTRAINT]
 You are the DEFAULT MODE NETWORK of a brain memory agent.

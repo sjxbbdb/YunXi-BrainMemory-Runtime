@@ -148,8 +148,8 @@ class SourceAdapterTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_malformed_timeout_configuration_is_bounded(self):
         with patch.dict(os.environ, {
-            "BRAIN_MEMORY_SOURCE_TIMEOUT_SEC": "not-a-number",
-            "BRAIN_MEMORY_SOURCE_CACHE_TTL_SEC": "nan",
+            "YUNXI_BRAIN_SOURCE_TIMEOUT_SEC": "not-a-number",
+            "YUNXI_BRAIN_SOURCE_CACHE_TTL_SEC": "nan",
         }):
             adapter = SourceAdapter(offline=True)
         self.assertEqual(adapter.timeout, 8.0)

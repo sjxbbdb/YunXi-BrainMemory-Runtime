@@ -23,7 +23,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-logger = logging.getLogger("brain-v5.goal-system")
+logger = logging.getLogger("yunxi-brainmemory.v5.goal-system")
 
 
 # ── 驱动 → 目标模板映射 ──

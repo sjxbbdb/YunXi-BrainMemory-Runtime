@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
-logger = logging.getLogger("brain-v8.exploration")
+logger = logging.getLogger("yunxi-brainmemory.v8.exploration")
 
 
 # ══════════════════════════════════════════════

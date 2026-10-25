@@ -1,4 +1,4 @@
-"""Brain Memory v5.4 — 集成测试。
+"""YunXi-BrainMemory-Runtime v5.4 — 集成测试。
 
 覆盖所有 v5.0-v5.4 新增模块:
   v5.0: self_model, curiosity, session, intent, agent_bridge
@@ -203,7 +203,7 @@ def test_cross_module_integration():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("Brain Memory v5.4 — 集成测试")
+    print("YunXi-BrainMemory-Runtime v5.4 — 集成测试")
     print("=" * 50)
 
     tests = [

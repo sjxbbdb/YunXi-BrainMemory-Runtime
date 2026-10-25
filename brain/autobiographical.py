@@ -26,7 +26,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Optional
 
-logger = logging.getLogger("brain-v10.autobiographical")
+logger = logging.getLogger("yunxi-brainmemory.v10.autobiographical")
 
 
 # ══════════════════════════════════════════════

@@ -33,7 +33,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Optional
 
-logger = logging.getLogger("brain-v9.cognitive-dispatch")
+logger = logging.getLogger("yunxi-brainmemory.v9.cognitive-dispatch")
 
 
 # ══════════════════════════════════════════════

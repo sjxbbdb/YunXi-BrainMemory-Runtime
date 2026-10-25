@@ -26,11 +26,11 @@ from brain.public_projection import sanitize_public_projection
 from config import DB_PATH, INPUT_TIMEOUT_SEC
 from storage.database import init_db, StateStore, MemoryStore
 
-logger = logging.getLogger("brain-v5.core")
+logger = logging.getLogger("yunxi-brainmemory.v5.core")
 
 
 class Brain:
-    """Brain Memory v5.0 — a conscious memory agent."""
+    """YunXi-BrainMemory-Runtime v5.0 — a conscious memory agent."""
 
     def __init__(self, db_path: str = DB_PATH):
         self.state_store = StateStore(db_path)

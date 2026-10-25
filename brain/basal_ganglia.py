@@ -10,7 +10,7 @@
 
 import logging
 
-logger = logging.getLogger("brain-v5.basal-ganglia")
+logger = logging.getLogger("yunxi-brainmemory.v5.basal-ganglia")
 
 # 预置习惯模式
 DEFAULT_HABITS = [

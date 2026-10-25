@@ -1,4 +1,4 @@
-"""Brain Memory V8.0 — 自主探索循环 验收测试。
+"""YunXi-BrainMemory-Runtime V8.0 — 自主探索循环 验收测试。
 
 验收标准:
   1. CorePurpose 不可删除/覆盖
@@ -164,7 +164,7 @@ class FakeGoal:
 
 if __name__ == "__main__":
     print("=" * 55)
-    print("Brain Memory V8.0 — 自主探索循环 验收测试")
+    print("YunXi-BrainMemory-Runtime V8.0 — 自主探索循环 验收测试")
     print("=" * 55)
 
     tests = [

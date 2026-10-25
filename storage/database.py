@@ -1,4 +1,4 @@
-"""Brain Memory v5.0 — storage layer with shared connections for concurrency."""
+"""YunXi-BrainMemory-Runtime v5.0 — storage layer with shared connections for concurrency."""
 
 import hashlib, json, logging, re, secrets, sqlite3, time, uuid
 from collections.abc import Mapping
@@ -8,7 +8,7 @@ from threading import RLock
 
 from config import DB_PATH
 
-logger = logging.getLogger("brain-v5.storage")
+logger = logging.getLogger("yunxi-brainmemory.v5.storage")
 DB_TIMEOUT = 10.0
 STATE_SNAPSHOT_RETENTION = 200
 DEFAULT_LIFE_CONTROL_TTL_SEC = 60.0

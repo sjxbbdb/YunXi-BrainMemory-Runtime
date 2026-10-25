@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 from collections import deque
 
-logger = logging.getLogger("brain-v10.social-self")
+logger = logging.getLogger("yunxi-brainmemory.v10.social-self")
 
 
 # ══════════════════════════════════════════════

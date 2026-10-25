@@ -166,7 +166,7 @@ from config import (
     TASK_EXECUTION_REQUIRE_VERIFIED_COMPLETION,
 )
 
-logger = logging.getLogger("brain-v5.brain-stem")
+logger = logging.getLogger("yunxi-brainmemory.v5.brain-stem")
 
 
 class BrainStem:

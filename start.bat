@@ -1,14 +1,14 @@
 @echo off
 setlocal EnableExtensions
 chcp 65001 >nul
-title Brain Memory v0.1
+title YunXi-BrainMemory-Runtime v0.1
 
 set "ROOT=%~dp0"
 cd /d "%ROOT%"
 
 echo.
 echo   ========================================
-echo     Brain Memory v0.1 - Self-Aware Agent
+echo     YunXi-BrainMemory-Runtime v0.1 - Self-Aware Agent
 echo   ========================================
 echo.
 
@@ -60,7 +60,7 @@ if not errorlevel 1 (
 )
 
 echo.
-echo   Starting Brain Memory on http://127.0.0.1:8001
+echo   Starting YunXi-BrainMemory-Runtime on http://127.0.0.1:8001
 echo   Dashboard: http://127.0.0.1:8001/dashboard
 echo   API Docs:  http://127.0.0.1:8001/docs
 echo   Press Ctrl+C to stop
@@ -70,6 +70,6 @@ echo.
 "%PYTHON%" -m uvicorn api.main:app --host 127.0.0.1 --port 8001
 set "EXIT_CODE=%ERRORLEVEL%"
 echo.
-echo   Brain Memory stopped (exit code %EXIT_CODE%).
+echo   YunXi-BrainMemory-Runtime stopped (exit code %EXIT_CODE%).
 pause
 exit /b %EXIT_CODE%

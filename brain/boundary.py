@@ -25,7 +25,7 @@ from datetime import datetime, timezone
 from typing import Any
 from collections import deque
 
-logger = logging.getLogger("brain-v10.boundary")
+logger = logging.getLogger("yunxi-brainmemory.v10.boundary")
 
 
 # ══════════════════════════════════════════════

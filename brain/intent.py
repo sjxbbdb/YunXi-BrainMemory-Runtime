@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
-logger = logging.getLogger("brain-v5.intent")
+logger = logging.getLogger("yunxi-brainmemory.v5.intent")
 
 
 def _safe_float(value: Any, default: float = 0.5) -> float:

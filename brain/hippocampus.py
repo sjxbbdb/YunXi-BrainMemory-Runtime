@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 
 from services.llm_client import get_llm
 
-logger = logging.getLogger("brain-v5.hippocampus")
+logger = logging.getLogger("yunxi-brainmemory.v5.hippocampus")
 
 HIPPOCAMPUS_ENCODE_PROMPT = """[SYSTEM CONSTRAINT]
 You are the HIPPOCAMPUS of a brain. You encode information into memory.
